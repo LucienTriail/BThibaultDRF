@@ -13,8 +13,7 @@ urlpatterns = [
     path('users/<int:pk>', views.UserDetail.as_view()),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
-
+    path('logout/', views.LogoutAPIView.as_view(), name='token_logout'),
 
 ]
  
