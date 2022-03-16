@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import Products
+from .models import Products, Transaction
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+
 
 
 class ProductsSerializer(serializers.ModelSerializer):
@@ -9,6 +10,12 @@ class ProductsSerializer(serializers.ModelSerializer):
         model = Products
         fields = '__all__'
 
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,3 +41,4 @@ class LogoutSerializer(serializers.Serializer):
 
         except TokenError:
             self.fail('bad_token')
+

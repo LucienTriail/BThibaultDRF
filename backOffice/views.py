@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Products
-from .serializers import ProductsSerializer, UserSerializer, LogoutSerializer
+from .models import Products, Transaction
+from .serializers import ProductsSerializer, UserSerializer, LogoutSerializer,TransactionSerializer
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,6 +19,7 @@ class LogoutAPIView(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
 class ProductList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Products.objects.all()
@@ -30,6 +31,13 @@ class SingleProduct(generics.RetrieveUpdateAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
     lookup_field = "pk"
+
+class TransactionList(generics.ListCreateAPIView):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer
+
+
+
 
 
 class UserList(generics.ListCreateAPIView):

@@ -15,3 +15,10 @@ class Products(models.Model):
     sale = models.BooleanField(default=False)
     stock = models.IntegerField()
     sold = models.IntegerField()
+
+
+class Transaction(models.Model):
+    date = models.DateTimeField()
+    amount = models.FloatField()
+    idProduct = models.ForeignKey(Products, on_delete=models.CASCADE)
+    productQuantity = models.IntegerField()
