@@ -33,7 +33,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
 ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,6 +46,11 @@ INSTALLED_APPS = [
     'rest_framework',
     "corsheaders",
     'rest_framework_simplejwt.token_blacklist',
+    'django_crontab',
+]
+
+CRONJOBS = [
+    ('0 0 * * *', 'django.core.management.call_command', ['flushexpiredtokens']),
 ]
 
 REST_FRAMEWORK = {
