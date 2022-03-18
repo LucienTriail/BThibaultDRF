@@ -23,3 +23,4 @@ class Transaction(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     productQuantity = models.IntegerField()
     category = models.CharField(max_length=32,default='empty')
+
