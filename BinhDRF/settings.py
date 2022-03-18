@@ -12,18 +12,27 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import environ
+import os
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g*)egj_8x2#rho!$#z-*^o*6l+pg*s(d*2c7oy%ewu1agxwxmf'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -32,7 +41,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
 ]
-
 
 
 # Application definition
@@ -48,6 +56,14 @@ INSTALLED_APPS = [
     'rest_framework',
     "corsheaders",
     'rest_framework_simplejwt.token_blacklist',
+
+    'django_crontab',
+]
+
+CRONJOBS = [
+    ('0 0 * * *', 'django.core.management.call_command', ['flushexpiredtokens']),
+
+
 
 ]
 
@@ -102,10 +118,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ThibaultBackOffice',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        'USER':"postgres",
-        'PASSWORD':"mika"
+
+        'HOST': env('HOST'),
+        'PORT': env('PORT')
+
     }
 }
 
@@ -128,8 +144,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(hours=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=3),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,

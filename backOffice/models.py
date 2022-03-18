@@ -20,5 +20,7 @@ class Products(models.Model):
 class Transaction(models.Model):
     date = models.DateTimeField()
     amount = models.FloatField()
-    idProduct = models.ForeignKey(Products, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
     productQuantity = models.IntegerField()
+    category = models.CharField(max_length=32,default='empty')
+
