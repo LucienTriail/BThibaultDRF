@@ -31,10 +31,23 @@ environ.Env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
+YOUR_S3_BUCKET = "issouflucienmickael"
+
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
+AWS_S3_BUCKET_NAME_STATIC = YOUR_S3_BUCKET
+
+# These next two lines will serve the static files directly
+# from the s3 bucket
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % YOUR_S3_BUCKET
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+
+# OR...if you create a fancy custom domain for your static files use:
+# AWS_S3_PUBLIC_URL_STATIC = "https://static.zappaguide.com/"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'dhkde4i7d3.execute-api.eu-west-3.amazonaws.com']
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
@@ -42,6 +55,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
 ]
 
+DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 
 # Application definition
 
@@ -56,14 +71,12 @@ INSTALLED_APPS = [
     'rest_framework',
     "corsheaders",
     'rest_framework_simplejwt.token_blacklist',
-
     'django_crontab',
+    'django_s3_storage',
 ]
 
 CRONJOBS = [
     ('0 0 * * *', 'django.core.management.call_command', ['flushexpiredtokens']),
-
-
 
 ]
 
@@ -118,9 +131,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ThibaultBackOffice',
-
         'HOST': env('HOST'),
-        'PORT': env('PORT')
+        'PORT': env('PORT'),
 
     }
 }
