@@ -17,10 +17,12 @@ class Products(models.Model):
     sold = models.IntegerField()
 
 
+
 class Transaction(models.Model):
     date = models.DateTimeField()
     amount = models.FloatField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     productQuantity = models.IntegerField()
     category = models.CharField(max_length=32,default='empty')
+    operation = models.CharField(max_length=32,default='empty')
 

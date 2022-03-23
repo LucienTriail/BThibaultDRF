@@ -19,7 +19,6 @@ class LogoutAPIView(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 class ProductList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Products.objects.all()
@@ -32,18 +31,18 @@ class SingleProduct(generics.RetrieveUpdateAPIView):
     serializer_class = ProductsSerializer
     lookup_field = "pk"
 
-class TransactionList(generics.ListCreateAPIView):
-    queryset = Transaction.objects.all()
-    serializer_class = TransactionSerializer
-
-
-
-
 
 class TransactionList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class UserList(generics.ListCreateAPIView):
