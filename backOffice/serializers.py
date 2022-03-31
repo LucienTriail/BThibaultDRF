@@ -12,20 +12,6 @@ class ProductsSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-
-    # def __init__(self, *args, **kwargs):
-    #     many = kwargs.pop('many', True)
-    #     super(TransactionSerializer, self).__init__(many=many, *args, **kwargs)
-
-    # def create(self, request, *args, **kwargs):
-    #     many = True if isinstance(request.data, list) else False
-    #     serializer = TransactionSerializer(data=request.data, many=many)
-    #     serializer.is_valid(raise_exception=True)
-    #     author = request.user  # you can change here
-    #     book_list = [Transaction(**data,author=author) for data in serializer.validated_data]
-    #     Transaction.objects.bulk_create(book_list)
-    #     return Response({}, status=status.HTTP_201_CREATED)
-
     class Meta:
         model = Transaction
         fields = '__all__'

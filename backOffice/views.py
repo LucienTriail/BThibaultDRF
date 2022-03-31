@@ -1,4 +1,6 @@
 from rest_framework import generics
+from rest_framework.exceptions import ValidationError
+from rest_framework.views import APIView
 from .models import Products, Transaction
 from .serializers import ProductsSerializer, UserSerializer, LogoutSerializer, TransactionSerializer
 from django.contrib.auth.models import User
@@ -23,6 +25,31 @@ class ProductList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
+
+
+class UpdateProductList(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, obj_id):
+        try:
+            return Products.objects.get(id=obj_id)
+        except (Products.DoesNotExist, ValidationError):
+            raise status.HTTP_404_NOT_FOUND
+
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        instances = []
+        for temp_dict in data:
+            product_id = temp_dict['id']
+            discount = temp_dict['discount']
+            stock = temp_dict['stock']
+            obj = self.get_object(product_id)
+            obj.discount = discount
+            obj.stock = stock
+            obj.save()
+            instances.append(obj)
+        serializer = ProductsSerializer(instances, many=True)
+        return Response(serializer.data)
 
 
 class SingleProduct(generics.RetrieveUpdateAPIView):

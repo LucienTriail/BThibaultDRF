@@ -53,8 +53,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
+'https://master.d3ektiey36kcw9.amplifyapp.com'
 ]
-
 DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
 STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 
@@ -126,16 +126,31 @@ WSGI_APPLICATION = 'BinhDRF.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+#
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ThibaultBackOffice',
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
+        'NAME': 'database-1',
+        'HOST': "database-1.calureisqwzb.eu-west-3.rds.amazonaws.com",
+        'PORT': "5432",
+        'PASSWORD': 'plop1992',
+        'USER': 'postgres'
 
     }
 }
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'database-1',
+#         'HOST': env('HOST'),
+#         'PORT': env('PORT'),
+#         'PASSWORD': env('PASSWORD'),
+#         'USER': env('USER'),
+#
+#
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
