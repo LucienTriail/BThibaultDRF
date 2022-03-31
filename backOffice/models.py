@@ -8,7 +8,7 @@ class Products(models.Model):
     name = models.CharField(max_length=32)
     comments = models.CharField(max_length=255)
     availability = models.BooleanField(default=True)
-    category = models.IntegerField()
+    category = models.CharField(max_length=32)
     price = models.IntegerField()
     discounted_price = models.IntegerField()
     unit = models.CharField(max_length=24)
