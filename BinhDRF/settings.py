@@ -18,6 +18,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # FOR LOCAL DEVELOPMENT
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -37,12 +38,23 @@ DATABASES = {
 
     }
 }
+ALLOWED_HOSTS = []
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+]
 
 
-
-
+'''
+#FOR ZAPPA
 DEBUG = os.environ['DEBUG']
 SECRET_KEY = os.environ['SECRET_KEY']
+ALLOWED_HOSTS = ['localhost', os.environ['HOST']]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+    os.environ['FRONT_HOST']
+]
+'''
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -64,14 +76,10 @@ STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['localhost', 'dhkde4i7d3.execute-api.eu-west-3.amazonaws.com']
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:4200',
-    'https://master.d3ektiey36kcw9.amplifyapp.com'
-]
+
 DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
 STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 
@@ -142,7 +150,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'BinhDRF.wsgi.application'
 
 # FOR ZAPPA
-#
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
