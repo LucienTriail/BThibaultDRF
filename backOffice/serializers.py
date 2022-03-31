@@ -1,5 +1,4 @@
-from requests import Response
-from rest_framework import serializers, status
+from rest_framework import serializers
 from .models import Products, Transaction
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError

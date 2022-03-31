@@ -15,21 +15,39 @@ from datetime import timedelta
 import environ
 import os
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# FOR LOCAL DEVELOPMENT
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 environ.Env.read_env()
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'HOST': env('HOST'),
+        'PORT':  env('PORT'),
+
+
+
+    }
+}
+
+
+
+
+DEBUG = os.environ['DEBUG']
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
 
 YOUR_S3_BUCKET = "issouflucienmickael"
 
@@ -45,7 +63,6 @@ STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 # AWS_S3_PUBLIC_URL_STATIC = "https://static.zappaguide.com/"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['localhost', 'dhkde4i7d3.execute-api.eu-west-3.amazonaws.com']
 
@@ -53,7 +70,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
-'https://master.d3ektiey36kcw9.amplifyapp.com'
+    'https://master.d3ektiey36kcw9.amplifyapp.com'
 ]
 DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
 STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
@@ -124,30 +141,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BinhDRF.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-#
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'database-1',
-        'HOST': "database-1.calureisqwzb.eu-west-3.rds.amazonaws.com",
-        'PORT': "5432",
-        'PASSWORD': 'plop1992',
-        'USER': 'postgres'
-
-    }
-}
+# FOR ZAPPA
 #
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'database-1',
-#         'HOST': env('HOST'),
-#         'PORT': env('PORT'),
-#         'PASSWORD': env('PASSWORD'),
-#         'USER': env('USER'),
-#
+#         'NAME': os.environ['DB_NAME'],
+#         'HOST': os.environ['DB_HOST'],
+#         'PORT': os.environ['PORT'],
+#         'PASSWORD': os.environ['PASSWORD'],
+#         'USER': os.environ['USER']
 #
 #     }
 # }
@@ -178,7 +181,7 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': True,
 
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': "SECRET_KEY",
+    'SIGNING_KEY': os.environ["JWT_KEY"],
     'VERIFYING_KEY': None,
     'AUDIENCE': None,
     'ISSUER': None,
